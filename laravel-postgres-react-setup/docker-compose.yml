@@ -12,7 +12,7 @@ services:
     networks:
       - app-network
     depends_on:
-      - mysql
+      - postgres
       - redis
 
   # Nginx Web Server for Backend API / Admin Blade
@@ -30,20 +30,37 @@ services:
     depends_on:
       - backend
 
-  # MySQL Database
-  mysql:
-    image: mysql:8.4.2
-    container_name: ${PROJECT_NAME:-app}-mysql
+  # Vite Dev Server for Inertia React
+  frontend:
+    image: node:20-alpine
+    container_name: ${PROJECT_NAME:-app}-frontend
+    restart: unless-stopped
+    working_dir: /var/www/backend
+    volumes:
+      - ./backend:/var/www/backend
+    ports:
+      - "${VITE_PORT:-5174}:${VITE_PORT:-5174}"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm run dev -- --host 0.0.0.0 --port $${VITE_PORT:-5174}"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: ${PROJECT_NAME:-app}-postgres
     restart: unless-stopped
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "${DB_PORT:-5432}:5432"
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE:-laravel_db}
-      MYSQL_USER: ${DB_USERNAME:-laravel_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-laravel_password}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-laravel_password}
+      POSTGRES_DB: ${DB_DATABASE:-laravel_db}
+      POSTGRES_USER: ${DB_USERNAME:-laravel_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-laravel_password}
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -76,7 +93,7 @@ networks:
     driver: bridge
 
 volumes:
-  mysql-data:
+  postgres-data:
     driver: local
   redis-data:
     driver: local

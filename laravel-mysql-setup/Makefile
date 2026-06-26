@@ -13,9 +13,9 @@ setup:
 	docker compose exec backend sed -i 's|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|' .env
 	docker compose exec backend sed -i 's|^# DB_HOST=.*|DB_HOST=mysql|' .env
 	docker compose exec backend sed -i 's|^# DB_PORT=.*|DB_PORT=3306|' .env
-	docker compose exec backend sed -i 's|^# DB_DATABASE=.*|DB_DATABASE=chanmay_db|' .env
-	docker compose exec backend sed -i 's|^# DB_USERNAME=.*|DB_USERNAME=chanmay_user|' .env
-	docker compose exec backend sed -i 's|^# DB_PASSWORD=.*|DB_PASSWORD=chanmay_password|' .env
+	docker compose exec backend sed -i 's|^# DB_DATABASE=.*|DB_DATABASE=laravel_db|' .env
+	docker compose exec backend sed -i 's|^# DB_USERNAME=.*|DB_USERNAME=laravel_user|' .env
+	docker compose exec backend sed -i 's|^# DB_PASSWORD=.*|DB_PASSWORD=laravel_password|' .env
 	docker compose exec backend sed -i 's|REDIS_HOST=127.0.0.1|REDIS_HOST=redis|' .env
 	docker compose exec backend sed -i 's|MAIL_MAILER=log|MAIL_MAILER=smtp|' .env
 	docker compose exec backend sed -i 's|MAIL_HOST=127.0.0.1|MAIL_HOST=mailpit|' .env

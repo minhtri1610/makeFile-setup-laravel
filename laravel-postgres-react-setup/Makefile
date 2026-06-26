@@ -10,9 +10,9 @@ setup:
 	docker compose run --rm backend composer create-project laravel/laravel . --prefer-dist --no-interaction || true
 	docker compose up -d
 	docker compose exec backend cp -n .env.example .env || true
-	docker compose exec backend sed -i 's|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|' .env
-	docker compose exec backend sed -i 's|^# DB_HOST=.*|DB_HOST=mysql|' .env
-	docker compose exec backend sed -i 's|^# DB_PORT=.*|DB_PORT=3306|' .env
+	docker compose exec backend sed -i 's|DB_CONNECTION=sqlite|DB_CONNECTION=pgsql|' .env
+	docker compose exec backend sed -i 's|^# DB_HOST=.*|DB_HOST=postgres|' .env
+	docker compose exec backend sed -i 's|^# DB_PORT=.*|DB_PORT=5432|' .env
 	docker compose exec backend sed -i 's|^# DB_DATABASE=.*|DB_DATABASE=laravel_db|' .env
 	docker compose exec backend sed -i 's|^# DB_USERNAME=.*|DB_USERNAME=laravel_user|' .env
 	docker compose exec backend sed -i 's|^# DB_PASSWORD=.*|DB_PASSWORD=laravel_password|' .env
@@ -67,9 +67,9 @@ backend-sh:
 frontend-sh:
 	docker compose exec frontend sh
 
-# CLI access to database
+# CLI access to database (PostgreSQL)
 db-shell:
-	docker compose exec mysql sh -c 'mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+	docker compose exec postgres sh -c 'PGPASSWORD=$$POSTGRES_PASSWORD psql -U $$POSTGRES_USER -d $$POSTGRES_DB'
 
 # Run database migrations
 migrate:
