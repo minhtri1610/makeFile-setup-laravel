@@ -9,6 +9,7 @@ Dockerized boilerplates for Laravel projects. One command `make setup` to get ru
 | [laravel-mysql-setup](./laravel-mysql-setup/) | Laravel + MySQL 8.4 + Blade | Backend: `8000` |
 | [laravel-postgres-setup](./laravel-postgres-setup/) | Laravel + PostgreSQL 16 + Blade | Backend: `8001` |
 | [laravel-mysql-inertial-react-setup](./laravel-mysql-inertial-react-setup/) | Laravel + MySQL 8.4 + Inertia React (Breeze) | Backend: `8002`, Vite: `5174` |
+| [laravel-postgres-react-setup](./laravel-postgres-react-setup/) | Laravel + PostgreSQL 16 + Inertia React (Breeze) | Backend: `8003`, Vite: `5175` |
 | [laravel-postgres-nextjs-setup](./laravel-postgres-nextjs-setup/) | Laravel + PostgreSQL 16 + Next.js | Backend: `8000`, Frontend: `3000` |
 
 All presets include **Nginx**, **Redis**, and **Mailpit** out of the box.
