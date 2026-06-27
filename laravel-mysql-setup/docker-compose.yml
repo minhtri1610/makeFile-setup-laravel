@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: docker/backend/Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.3}
     container_name: ${PROJECT_NAME:-app}-backend
     restart: unless-stopped
     working_dir: /var/www/backend
