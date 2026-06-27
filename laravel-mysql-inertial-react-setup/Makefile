@@ -7,7 +7,7 @@ setup:
 	cp -n .env.example .env || true
 	mkdir -p backend
 	docker compose build
-	docker compose run --rm backend composer create-project laravel/laravel . --prefer-dist --no-interaction || true
+	docker compose run --rm backend composer create-project laravel/laravel . $(LARAVEL_VERSION) --prefer-dist --no-interaction || true
 	docker compose up -d
 	docker compose exec backend cp -n .env.example .env || true
 	docker compose exec backend sed -i 's|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|' .env
@@ -21,8 +21,10 @@ setup:
 	docker compose exec backend sed -i 's|MAIL_HOST=127.0.0.1|MAIL_HOST=mailpit|' .env
 	docker compose exec backend sed -i 's|MAIL_PORT=2525|MAIL_PORT=1025|' .env
 	docker compose exec backend composer require laravel/breeze --dev --no-interaction || true
+	docker compose exec backend composer install --no-interaction || true
 	docker compose exec backend php artisan breeze:install react --no-interaction || true
-	docker compose run --rm frontend npm install || true
+	docker compose exec backend sh -c '[ -f resources/js/bootstrap.js ] || printf "import axios from \"axios\";\nwindow.axios = axios;\nwindow.axios.defaults.headers.common[\"X-Requested-With\"] = \"XMLHttpRequest\";\n" > resources/js/bootstrap.js'
+	docker compose run --rm frontend npm install --legacy-peer-deps || true
 	docker compose run --rm frontend npm run build || true
 	docker compose restart frontend || true
 	sleep 10
@@ -85,7 +87,7 @@ composer-install:
 
 # Install Node dependencies
 npm-install:
-	docker compose run --rm frontend npm install
+	docker compose run --rm frontend npm install --legacy-peer-deps
 
 # Clean up dependencies and environment files
 clean:

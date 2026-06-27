@@ -7,7 +7,7 @@ setup:
 	cp -n .env.example .env || true
 	mkdir -p backend
 	docker compose build
-	docker compose run --rm backend composer create-project laravel/laravel . --prefer-dist --no-interaction || true
+	docker compose run --rm backend composer create-project laravel/laravel . $(LARAVEL_VERSION) --prefer-dist --no-interaction || true
 	docker compose up -d
 	docker compose exec backend cp -n .env.example .env || true
 	docker compose exec backend sed -i 's|DB_CONNECTION=sqlite|DB_CONNECTION=pgsql|' .env
@@ -21,6 +21,7 @@ setup:
 	docker compose exec backend sed -i 's|MAIL_HOST=127.0.0.1|MAIL_HOST=mailpit|' .env
 	docker compose exec backend sed -i 's|MAIL_PORT=2525|MAIL_PORT=1025|' .env
 	sleep 10
+	docker compose exec backend composer install --no-interaction || true
 	docker compose exec backend php artisan key:generate || true
 	docker compose exec backend php artisan migrate || true
 

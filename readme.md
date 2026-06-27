@@ -37,4 +37,17 @@ make setup
 
 ## Configuration
 
-Edit `.env` in each preset to customize ports, project name, and database credentials. See `.env.example` for available options.
+Edit `.env` in each preset to customize. Key options:
+
+```env
+PHP_VERSION=8.3              # PHP version (8.3, 8.2, 8.1)
+LARAVEL_VERSION=             # Laravel version (empty = latest, e.g. "11.*", "10.*")
+PROJECT_NAME=app             # Container name prefix
+WEBSERVER_PORT=8000          # Nginx port
+DB_PORT=3306                 # Database port
+```
+
+> After changing `PHP_VERSION`, run `make build` to rebuild the image.
+> `LARAVEL_VERSION` only applies during `make setup` (first run).
+
+See `.env.example` in each preset for all available options.
